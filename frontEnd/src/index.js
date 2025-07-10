@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "bootstrap/dist/css/bootstrap.min.css"; //that file is installed in node module as dependency 
+      //import "file_path";
+import 'react-toastify/dist/ReactToastify.css'; //that labrari provide customizable toast notification popup
+import { ToastContainer, toast } from 'react-toastify';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
