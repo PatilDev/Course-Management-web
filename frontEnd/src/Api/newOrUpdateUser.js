@@ -162,5 +162,4 @@ function NewOrUpdatedUser({ editUser, setEditUser, reloadData }) {
     </div>
   );
 }
-
 export default NewOrUpdatedUser;

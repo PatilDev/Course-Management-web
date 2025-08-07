@@ -1,4 +1,4 @@
-package com.dev.mycourseapp.Entity;
+package com.dev.mycourseapp.entity;
 
 import java.util.Objects;
 

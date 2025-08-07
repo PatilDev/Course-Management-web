@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 import axios from "axios";
 import baseUrl from "../Api/SpringBootApi";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 const UpdateCourse = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Optional: to redirect after update
   const courseFromState = location.state;
 
   const [course, setCourse] = useState({
@@ -18,16 +19,17 @@ const UpdateCourse = () => {
   });
 
   useEffect(() => {
-  if (courseFromState) {
-    setCourse({
-      id: courseFromState.id || "",
-      title: courseFromState.title || "",
-      description: courseFromState.description || "",
-      price: courseFromState.price || "",
-      duration: courseFromState.duration || ""
-    });
-  }
-}, [courseFromState]);
+    if (courseFromState) {
+      setCourse({
+        id: courseFromState.id || "",
+        title: courseFromState.title || "",
+        description: courseFromState.description || "",
+        price: courseFromState.price || "",
+        duration: courseFromState.duration || ""
+      });
+    }
+  }, [courseFromState]);
+
   const handleChange = (e) => {
     setCourse({ ...course, [e.target.name]: e.target.value });
   };
@@ -35,12 +37,17 @@ const UpdateCourse = () => {
   const handleForm = (e) => {
     e.preventDefault();
     axios
-      .put(`${baseUrl}/update/${course.id}`, course)
+      .put(`${baseUrl}/update/${course.id}`, course, {
+        withCredentials: true, // include session/cookie if needed
+      })
       .then((res) => {
-        toast.success("Course updated successfully");
+        toast.success("✅ Course updated successfully");
+        // Optional: navigate back to courses page
+        navigate("/view-courses");
       })
       .catch((err) => {
-        toast.error("Something went wrong");
+        console.error(err);
+        toast.error("❌ Something went wrong");
       });
   };
 
@@ -52,15 +59,13 @@ const UpdateCourse = () => {
         padding: 30,
         backgroundColor: "cyan",
         border: "solid",
-        borderColor: "darkmagenta"
+        borderColor: "darkmagenta",
       }}
     >
       <h1 className="text-center my-3">Update Course</h1>
 
       <FormGroup>
-        <Label for="title">
-          <b>Course Title</b>
-        </Label>
+        <Label for="title"><b>Course Title</b></Label>
         <Input
           type="text"
           placeholder="Enter Title"
@@ -72,9 +77,7 @@ const UpdateCourse = () => {
       </FormGroup>
 
       <FormGroup>
-        <Label for="description">
-          <b>Course Description</b>
-        </Label>
+        <Label for="description"><b>Course Description</b></Label>
         <Input
           type="textarea"
           placeholder="Enter Description"
@@ -87,9 +90,7 @@ const UpdateCourse = () => {
       </FormGroup>
 
       <FormGroup>
-        <Label for="price">
-          <b>Price</b>
-        </Label>
+        <Label for="price"><b>Price</b></Label>
         <Input
           type="text"
           placeholder="... RS"
@@ -101,9 +102,7 @@ const UpdateCourse = () => {
       </FormGroup>
 
       <FormGroup>
-        <Label for="duration">
-          <b>Duration</b>
-        </Label>
+        <Label for="duration"><b>Duration</b></Label>
         <Input
           type="text"
           placeholder=".. MONTH OR DAY"

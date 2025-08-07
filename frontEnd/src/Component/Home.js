@@ -7,7 +7,8 @@ import {
   Container,
   Button,
 } from "reactstrap";
-import Allcourse from "./All_Courses";
+import baseUrl from "../Api/SpringBootApi";
+import axios from "axios";
 
 function Home() {
   useEffect(() => {
@@ -29,7 +30,18 @@ function Home() {
          </h5>
           <Container>
             <Button color="primary" outline>Start Using</Button>
+            
           </Container>
+          {useEffect(() => {
+  axios.get(`${baseUrl}/me`, { withCredentials: true })
+    .then(res => {
+      console.log("Logged-in user:", res.data);
+    })
+    .catch(err => {
+      console.error("Not logged in");
+    })
+}, [])}
+
         </ListGroupItem>
       </ListGroup>
     </div>

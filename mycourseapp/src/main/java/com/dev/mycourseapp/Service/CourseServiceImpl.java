@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dev.mycourseapp.Entity.Course;
+import com.dev.mycourseapp.entity.Course;
 import com.dev.mycourseapp.Repository.CourseRepository;
 
 @Service

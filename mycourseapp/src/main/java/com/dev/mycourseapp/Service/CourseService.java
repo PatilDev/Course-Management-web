@@ -2,7 +2,7 @@ package com.dev.mycourseapp.Service;
 
 import java.util.List;
 
-import com.dev.mycourseapp.Entity.Course;
+import com.dev.mycourseapp.entity.Course;
 
 
 public interface CourseService {

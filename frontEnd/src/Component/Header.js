@@ -1,17 +1,24 @@
-import react from "react";
-import { Card, CardBody } from "reactstrap";
+import React from 'react';
+import { Button, Navbar, NavbarBrand } from 'reactstrap';
 
-function Header({ name,title })
-{
- return(
-       <div>
-       <Card style={{color:"white", backgroundColor:"black"}}>
-            <CardBody>
-                <h2 className="text-center my-1 ">Welcome to courses Application</h2>
-            </CardBody>
-       </Card>
-       
-       </div>
-);
-}
+const Header = ({ userInfo, setUserInfo }) => {
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    setUserInfo(null);
+    window.location.href = "http://localhost:8080/logout";
+  };
+
+  return (
+    <Navbar color="dark" dark>
+      <NavbarBrand href="/">My Course App</NavbarBrand>
+      {userInfo && (
+        <div className="ms-auto me-2 text-white">
+          {userInfo.email} &nbsp;
+          <Button color="danger" size="sm" onClick={handleLogout}>Logout</Button>
+        </div>
+      )}
+    </Navbar>
+  );
+};
+
 export default Header;

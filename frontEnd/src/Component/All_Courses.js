@@ -5,36 +5,42 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Allcourse = () => {
-  
+  const [courses, setCourses] = useState([]);
+
   useEffect(() => {
     document.title = "All courses  || Learn Code ";
     getAllCoursesFromServer();
-  }, []); // we want call only at mount (once once) so we pass []
+  }, []);
 
-  // function to call spring boot Api
+  // GET all courses
   const getAllCoursesFromServer = () => {
     axios.get(`${baseUrl}/all-courses`).then(
       (response) => {
-        console.log(response);
         setCourses(response.data);
-        toast.success("Courses have been loaded", {
+        toast.success("Courses loaded successfully", {
           position: "bottom-center",
           toastId: "course-load-toast",
         });
-      }, // if success
+      },
       (error) => {
-        console.log(error);
-        toast.error("something went wrong");
-      } // if error
+        toast.error("Something went wrong");
+      }
     );
   };
 
-  const [courses, setCourses] = useState([
-    // { title: "JAVA FULL STACK", description: "this is java course" },
-    // { title: "ADVANCE PYTHON", description: "this is java course" },
-    // { title: "REACT JS", description: "this is java course" },
-    // { title: "DEV OPS", description: "this is java course" },
-  ]);
+  // DELETE course by ID
+  const deleteCourse = (id) => {
+    axios.delete(`${baseUrl}/delete/${id}`).then(
+      (res) => {
+        toast.success("Course deleted successfully");
+        // Remove course from state after deletion
+        setCourses(courses.filter((c) => c.id !== id));
+      },
+      (err) => {
+        toast.error("Failed to delete course");
+      }
+    );
+  };
 
   return (
     <div>
@@ -44,14 +50,13 @@ const Allcourse = () => {
         </b>
       </center>
 
-      {
-        courses.length > 0 
-          ? courses.map((item) => (
-              <Course key={item.id} course={item} /> // ✅ key added to remove warning
-            
-            ))
-          : "No courses"
-      }
+      {courses.length > 0 ? (
+        courses.map((item) => (
+          <Course key={item.id} course={item} onDelete={deleteCourse} />
+        ))
+      ) : (
+        "No courses"
+      )}
     </div>
   );
 };
